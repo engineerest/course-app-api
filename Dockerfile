@@ -1,4 +1,4 @@
-FROM python:3.13.0b2-bookworm
+FROM python:3.9-alpine
 LABEL maintainer="course.com"
 
 ENV PYTHONUNBUFFERED 1
