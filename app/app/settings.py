@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import os
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -37,6 +38,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+
+    "app.core",
+    "app.core.management.commands.wait_for_db"
 ]
 
 MIDDLEWARE = [
@@ -67,19 +71,29 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "app.wsgi.application"
+# WSGI_APPLICATION = "app.wsgi.application"
 
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# DATABASES = {
+#     "default": {
+#         'ENGINE' : 'django.db.backends.postgresql',
+#         'HOST' : os.environ.get('DB_HOST'),
+#         'NAME' : os.environ.get('DB_NAME'),
+#         'USER' : os.environ.get('DB_USER'),
+#         'PASSWORD' : os.environ.get('DB_PASS')
+#     }
+# }
+
 DATABASES = {
     "default": {
         'ENGINE' : 'django.db.backends.postgresql',
-        'HOST' : os.environ.get('DB_HOST'),
-        'NAME' : os.environ.get('DB_NAME'),
-        'USER' : os.environ.get('DB_USER'),
-        'PASSWORD' : os.environ.get('DB_PASS')
+        'HOST' : '127.0.0.1',
+        'NAME' : 'devdb',
+        'USER' : 'devuser',
+        'PASSWORD' : 'changeme'
     }
 }
 
@@ -124,3 +138,5 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+AUTH_USER_MODEL = "core.User"
