@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     "app.core.management.commands.wait_for_db",
     'app.user',
     'app.core.models.Recipe',
-    'app.recipe'
+    'app.recipe',
 ]
 
 MIDDLEWARE = [
