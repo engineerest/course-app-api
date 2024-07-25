@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 import os
 import django
+from drf_spectacular.contrib import rest_auth
 
 django.setup()
 
@@ -36,6 +37,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     "django.contrib.admin",
+    "django.contrib.siteS",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -43,18 +45,18 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 
 
-    'app.core',
+    # 'rest_framework.authtoken.models.Token',
+    # "app.core.management.commands.wait_for_db",
+    # 'app.core.models.Recipe',
     'rest_framework',
     'rest_framework.authtoken',
     "drf_spectacular",
-    "app.core.management.commands.wait_for_db",
     'app.user',
-    'app.core.models.Recipe',
+    'app.core',
     'app.recipe',
-    'sqlparse',
-    'postgres'
-
 ]
+
+SITE_ID = 1
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
