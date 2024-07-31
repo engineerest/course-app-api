@@ -15,7 +15,7 @@ import os
 import django
 from drf_spectacular.contrib import rest_auth
 
-django.setup()
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,36 +25,56 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-udchpy3ejf#oaqi9s$)j&&)5$i&tym28+sxpb5@d+%(w!53u(s"
+SECRET_KEY = os.environ.get('SECRET_KEY', 'changeme')
 
 # SECURITY WARNING: don't run with debug turned on in production!
+# DEBUG = bool(int(os.environ.get('DEBUG', 1)))
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS.extend(
+    filter(None, os.environ.get('ALLOWED_HOSTS', '').split(','))
+)
 
 # Application definition
 
+
+from helper import content_type_app_label_solution as content_type_app_label
+
+
 INSTALLED_APPS = [
-    "django.contrib.admin",
-    "django.contrib.siteS",
-    "django.contrib.auth",
-    "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.messages",
-    "django.contrib.staticfiles",
+    'django.contrib.admin',
+    'django.contrib.sites',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'django.contrib.contenttypes.models.ContentType',
+    f'{content_type_app_label}',
+
+    'app.core.models.User',
+    'app.core.apps.CoreConfig',
+    'app.recipe.apps.RecipeConfig',
+    'app.user.apps.UserConfig',
+    'app.core.models.Recipe',
+    'app.core.models.Ingredient',
+    'app.core.models.Tag',
 
 
-    # 'rest_framework.authtoken.models.Token',
-    # "app.core.management.commands.wait_for_db",
-    # 'app.core.models.Recipe',
     'rest_framework',
     'rest_framework.authtoken',
-    "drf_spectacular",
+    'rest_framework.authtoken.models.Token',
+    'drf_spectacular',
+    'sqlparse',
+
     'app.user',
     'app.core',
     'app.recipe',
+    'app.app',
 ]
+
+django.setup()
 
 SITE_ID = 1
 
@@ -104,11 +124,11 @@ TEMPLATES = [
 
 DATABASES = {
     "default": {
-        'ENGINE' : 'django.db.backends.postgresql',
-        'HOST' : '127.0.0.1',
-        'NAME' : 'devdb',
-        'USER' : 'devuser',
-        'PASSWORD' : 'changeme'
+        'ENGINE': 'django.db.backends.postgresql',
+        'HOST': '127.0.0.1',
+        'NAME': 'devdb',
+        'USER': 'devuser',
+        'PASSWORD': 'changeme'
     }
 }
 
@@ -159,7 +179,11 @@ STATIC_ROOT = '/vol/web/static'
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-AUTH_USER_MODEL = "core.User"
+from app.core.models import User
+
+AUTH_USER_MODEL = f"{User.__module__}.{User.__name__}"
+
+# DJANGO_SETTINGS_MODULE = "app.core.settings"
 
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
@@ -169,3 +193,4 @@ REST_FRAMEWORK = {
 SPECTACULAR_SETTINGS = {
     'COMPONENT_SPLIT_REQUEST': True,
 }
+

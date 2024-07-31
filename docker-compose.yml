@@ -1,27 +1,28 @@
 version: "3.9"
 
 services:
-  app:
-    build:
-      context: .
-      args:
-        - DEV=true
-    ports:
-      - "8000:8000"
-    volumes:
-      - .:/app
-      - dev-static-data:/vol/web
-    command:
-      sh -c "python manage.py wait_for_db && 
-             python manage.py migrate &&
-             python manage.py runserver 0.0.0.0:8000"
-    environment:
-      DB_HOST: "postgres"
-      DB_NAME: "devdb"
-      DB_USER: "devuser"
-      DB_PASS: "changeme"
-    depends_on:
-      - postgres
+#  app:
+#    build:
+#      context: .
+#      args:
+#        - DEV=true
+#    ports:
+#      - "8000:8000"
+#    volumes:
+#      - .:/app
+#      - dev-static-data:/vol/web
+#    command:
+#      sh -c "python manage.py wait_for_db &&
+#             python manage.py migrate &&
+#             python manage.py runserver 0.0.0.0:8000"
+#    environment:
+#      DB_HOST: "postgres"
+#      DB_NAME: "devdb"
+#      DB_USER: "devuser"
+#      DB_PASS: "changeme"
+#      DEBUG: 1
+#    depends_on:
+#      - postgres
 
   postgres:
     image: postgres:16
@@ -34,6 +35,6 @@ services:
     ports:
       - 5432:5432
 
-volumes:
-  dev-db-data:
-  dev-static-data:
+#volumes:
+#  dev-db-data:
+#  dev-static-data:

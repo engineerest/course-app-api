@@ -3,11 +3,8 @@ import os
 
 from django.conf import settings
 from django.db import models
-from django.contrib.auth.models import (
-    AbstractBaseUser,
-    BaseUserManager,
-    PermissionsMixin
-)
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+
 
 def recipe_image_file_path(instance, filename):
     ext = os.path.splitext(filename)[1]
