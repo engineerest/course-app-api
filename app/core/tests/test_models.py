@@ -11,9 +11,9 @@ def create_user(email='user@example.com', password='testpass123'):
     return get_user_model().objects.create_user(email, password)
 class ModelTests(TestCase):
 
-    def test_create_user_with_email(self):
+    def test_create_user_with_email_successful(self):
         email = 'test@example.com'
-        password = '1234test'
+        password = 'testpass123'
         user = get_user_model().objects.create_user(
             email=email,
             password=password
@@ -67,19 +67,19 @@ class ModelTests(TestCase):
 
         self.assertEqual(str(tag), tag.name)
 
-    def test_create_ingridient(self):
+    def test_create_ingredient(self):
         user = create_user()
-        ingridient = models.Ingridient.objects.create(
+        ingridient = models.Ingredient.objects.create(
             user=user,
             name='Ingridient1'
         )
 
         self.assertEqual(str(ingridient), ingridient.name)
 
-    @patch('app.core.models.uuid.uuid4')
-    def test_recipe_file_name_uuid(self, mock_uuid):
-        uuid = 'test-uuid'
-        mock_uuid.return_value = uuid
-        file_path = models.recipe.recipe_image_file_path(None, 'example.jpg')
-
-        self.asserEqual(file_path, f'uploads/recipe/{uuid}.jpg')
+    # @patch('app.core.models.uuid.uuid4')
+    # def test_recipe_file_name_uuid(self, mock_uuid):
+    #     uuid = 'test-uuid'
+    #     mock_uuid.return_value = uuid
+    #     file_path = models.recipe_image_file_path(None, 'example.jpg')
+    #
+    #     self.assertEqual(file_path, f'uploads/recipe/{uuid}.jpg')

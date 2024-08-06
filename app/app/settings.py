@@ -28,8 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY', 'changeme')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = bool(int(os.environ.get('DEBUG', 1)))
-DEBUG = True
+DEBUG = bool(int(os.environ.get('DEBUG', 0)))
 
 ALLOWED_HOSTS = []
 ALLOWED_HOSTS.extend(
@@ -40,7 +39,7 @@ ALLOWED_HOSTS.extend(
 
 
 from helper import content_type_app_label_solution as content_type_app_label
-
+from helper import auth_error_solution
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -52,6 +51,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.contenttypes.models.ContentType',
     f'{content_type_app_label}',
+    f'{auth_error_solution}',
 
     'app.core.models.User',
     'app.core.apps.CoreConfig',
@@ -67,6 +67,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken.models.Token',
     'drf_spectacular',
     'sqlparse',
+    'auth',
 
     'app.user',
     'app.core',
@@ -106,7 +107,7 @@ TEMPLATES = [
     },
 ]
 
-# WSGI_APPLICATION = "app.wsgi.application"
+WSGI_APPLICATION = "app.wsgi.application"
 
 
 # Database
@@ -122,16 +123,18 @@ TEMPLATES = [
 #     }
 # }
 
+from helper import db_settings_solution
+
 DATABASES = {
     "default": {
-        'ENGINE': 'django.db.backends.postgresql',
-        'HOST': '127.0.0.1',
+        'ENGINE': f'{db_settings_solution}',
         'NAME': 'devdb',
         'USER': 'devuser',
-        'PASSWORD': 'changeme'
+        'PASSWORD': 'changeme',
+        'PORT': '5421',
+        'HOST': '127.0.0.1',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -181,7 +184,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 from app.core.models import User
 
-AUTH_USER_MODEL = f"{User.__module__}.{User.__name__}"
+AUTH_USER_MODEL = f'{User}'
+
 
 # DJANGO_SETTINGS_MODULE = "app.core.settings"
 
@@ -193,4 +197,5 @@ REST_FRAMEWORK = {
 SPECTACULAR_SETTINGS = {
     'COMPONENT_SPLIT_REQUEST': True,
 }
+
 

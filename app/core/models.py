@@ -3,7 +3,7 @@ import os
 
 from django.conf import settings
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager, PermissionsMixin)
 
 
 def recipe_image_file_path(instance, filename):
@@ -46,7 +46,7 @@ class Recipe(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True)
     time_minutes = models.IntegerField()
-    price = models.IntegerField(max_length=5, default=0)
+    price = models.DecimalField(max_length=5, decimal_places=2)
     link = models.CharField(max_length=255, blank=True)
     tags = models.ManyToManyField('Tag')
     ingredients = models.ManyToManyField('Ingredient')
